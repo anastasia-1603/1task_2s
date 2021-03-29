@@ -45,12 +45,11 @@ public class MyPriorityQueue<T extends Comparable<T>> implements MyPriorityQueue
 
         if (isEmpty())
         {
-            head = newElement;
-            tail = newElement;
+            head = tail = newElement;
         }
         else
         {
-            if (compare(newElement.value, tail.value) > 0)
+            if (compare(value, tail.value) > 0)
             {
                 tail.next = newElement;
                 tail = newElement;
@@ -58,7 +57,7 @@ public class MyPriorityQueue<T extends Comparable<T>> implements MyPriorityQueue
                 return;
             }
 
-            if (compare(newElement.value, head.value) < 0)
+            if (compare(value, head.value) < 0)
             {
                 head = new QueueElement<>(value, head);
                 size++;
@@ -67,19 +66,12 @@ public class MyPriorityQueue<T extends Comparable<T>> implements MyPriorityQueue
 
             QueueElement<T> currentElement = head;
 
-            for (int i = 0; i < size(); i++)
+            while (compare(value, currentElement.next.value) > 0)
             {
-                if (compare(newElement.value, currentElement.next.value) > 0)
-                {
-                    currentElement = currentElement.next;
-                }
-                else
-                {
-                    newElement.next = currentElement.next;
-                    currentElement.next = newElement;
-                    break;
-                }
+                currentElement = currentElement.next;
             }
+            newElement.next = currentElement.next;
+            currentElement.next = newElement;
         }
         size++;
     }
